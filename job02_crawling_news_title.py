@@ -50,12 +50,14 @@ for i in range(1):
             for m in range(1, 6):
                 try:
                     title = driver.find_element('xpath', '//*[@id="section_body"]/ul[{}]/li[{}]/dl/dt[2]/a'.format(k, m)).text
-                    title = re.compile('[^가-힣]').sub(' ', title)
+                    title = re.compile('[^가-힣|a-z|A-Z|0-9]').sub(' ', title)
                     titles.append(title)
                 except:
                     # 파일에 오류가 있을 경우 error + 카테고리 넘버, 페이지 수, 글 번호 를 출력하도록 함
                     print('error {} {} {} {}'.format(i, j, k, m))
         if j % 10 == 0:
+            # for 문을 진행하는 중 문제가 발생하여 중단되는 일을 방지하기 위해
+            # 10페이지 단위로 중간 저장함
             df_section_title = pd.DataFrame(titles,columns=['titles'])
             df_section_title['category']=category[i]
             df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)

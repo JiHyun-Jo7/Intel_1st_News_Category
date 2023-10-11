@@ -45,7 +45,7 @@ for i in range(6):
     section_url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=10{}'.format(i)
     titles = []                 # titles 초기화
     for j in range(1, 3):       # pages[i]+1
-        url = section_url + 'date=%2000:00:00&page={}'.format(j)
+        url = section_url + '#&date=%2000:00:00&page={}'.format(j)
         driver.get(url)
         time.sleep(0.5)           # 페이지가 바뀔 시간을 줌 (1초 미만 권장)
         for k in range(1, 5):

@@ -38,11 +38,11 @@ category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'IT']
 pages = [110, 110, 110, 75, 110, 72]    # 학습을 위해 최대 페이지를 중간 지점인 110 페이지로 제한함
 df_titles = pd.DataFrame()
 
-for i in range(6):
+for i in range(1):
     # 카테고리 변경
     section_url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=10{}'.format(i)
     titles = []                 # titles 초기화
-    for j in range(1, 3):       # pages[i]+1 (시간 문제 상 3으로 축소)
+    for j in range(1, pages[i]+1):       # pages[i]+1 (시간 문제 상 3으로 축소)
         url = section_url + '#&date=%2000:00:00&page={}'.format(j)        # 페이지 변경
         driver.get(url)
         time.sleep(0.5)           # 페이지가 바뀔 수 있도록 대기 시간을 줌 (1초 미만 권장)
@@ -53,17 +53,20 @@ for i in range(6):
                     title = re.compile('[^가-힣]').sub(' ', title)
                     titles.append(title)
                 except:
+                    # 파일에 오류가 있을 경우 error + 카테고리 넘버, 페이지 수, 글 번호 를 출력하도록 함
                     print('error {} {} {} {}'.format(i, j, k, m))
         if j % 10 == 0:
             df_section_title = pd.DataFrame(titles,columns=['titles'])
             df_section_title['category']=category[i]
             df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
+            # crawling 폴더에 naver_news_(카테고리 넘버)_(페이지).cvs 파일로 저장
             df_titles.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(i, j), index=False)
-            titles = []
+            titles = []         # titles 초기화
     df_section_title = pd.DataFrame(titles, columns=['titles'])
     df_section_title['category'] = category[i]
     df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
-    df_titles.to_csv('./crawling_data/crawling_data_last.csv', index=False)
+    # crawling 폴더에 naver_news_(카테고리 넘버)_(년월일).cvs 파일로 저장
+    df_titles.to_csv('./crawling_data/crawling_data_{}_{}.csv'.format(i, datetime.datetime.now().strftime('%Y%m%d')), index=False)
 
 print(df_titles.head(20))       # 상위 제목 20개 출력
 df_titles.info()

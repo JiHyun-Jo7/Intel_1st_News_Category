@@ -41,6 +41,8 @@ for i in range(6):
     df_section_titles = pd.DataFrame(titles, columns=['titles'])
     # i 번째 카테고리의 묶음을 만듦
     df_section_titles['category'] = category[i]
+    if category[i] == 'IT':
+        df = df.rename(columns={'IT': 'Science'})
     # 카테고리, 헤드라인이 전부 들어있는 묶음을 만듦
     df_titles = pd.concat([df_titles, df_section_titles], axis='rows')
 

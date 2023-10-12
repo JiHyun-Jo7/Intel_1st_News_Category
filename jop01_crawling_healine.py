@@ -1,6 +1,6 @@
-from bs4 import BeautifulSoup
-import requests
-import re
+from bs4 import BeautifulSoup           # HTML과 XML 문서들의 구문을 분석
+import requests                         # HTTP 요청을 만들기 위한 라이브러리
+import re                               # 정규식 지원을 제공. 정규식 패턴과 문자열을 사용하여 문자열 내에서 해당 패턴을 검색
 import pandas as pd
 import datetime
 

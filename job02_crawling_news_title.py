@@ -33,7 +33,7 @@ driver = webdriver.Chrome(service=service, options=options)
 # //*[@id="section_body"]/ul[1]/li[1]/dl/dt[2]/a : 2페이지 1번째 기사
 # 다중 for문을 사용하여 전체 기사 제목 출력
 
-category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'IT']
+category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'Science']
 # pages = [146, 328, 461, 75, 117, 72]  # 각 카테고리 별 총 페이지 수
 pages = [110, 110, 110, 75, 110, 72]    # 학습을 위해 최대 페이지를 중간 지점인 110 페이지로 제한함
 df_titles = pd.DataFrame()

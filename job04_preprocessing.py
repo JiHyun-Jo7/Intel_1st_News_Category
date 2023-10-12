@@ -22,13 +22,13 @@ encoder = LabelEncoder()
 labeled_y = encoder.fit_transform(Y)
 print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
 label = encoder.classes_
-print(label)
+# print(label)
 
 with open('./models/encoder.pickle', 'wb') as f:
     pickle.dump(encoder, f)
 
 onehot_y = to_categorical(labeled_y)
-print(onehot_y)                                 # 카테고리 onehot-encoding
+# print(onehot_y)                                 # 카테고리 onehot-encoding
 
 okt = Okt()
 
@@ -73,4 +73,5 @@ print(X_test.shape, Y_test.shape)
 
 xy = X_train, X_test, Y_train, Y_test
 np.save('./crawling_data/news_data_max_{}_wordsize_{}'.format(max, wordsize), xy)
+# npy 파일 생성시 job03 오류 발생하므로 지우고 돌릴것
 

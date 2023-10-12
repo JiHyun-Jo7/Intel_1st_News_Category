@@ -38,9 +38,10 @@ category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'Science']
 pages = [110, 110, 110, 75, 110, 72]    # 학습을 위해 최대 페이지를 중간 지점인 110 페이지로 제한함
 df_titles = pd.DataFrame()
 
-for i in range(1):
+for i in range(6):
     # 카테고리 변경
     section_url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=10{}'.format(i)
+    df_titles = pd.DataFrame()
     titles = []                 # titles 초기화
     for j in range(1, pages[i]+1):       # pages[i]+1 (시간 문제 상 3으로 축소)
         url = section_url + '#&date=%2000:00:00&page={}'.format(j)        # 페이지 변경
@@ -53,19 +54,26 @@ for i in range(1):
                     title = re.compile('[^가-힣|a-z|A-Z|0-9]').sub(' ', title)
                     titles.append(title)
                 except:
-                    # 파일에 오류가 있을 경우 error + 카테고리 넘버, 페이지 수, 글 번호 를 출력하도록 함
+                    # 파일에 사진이 없을 경우 error + 카테고리 넘버, 페이지 수, 글 번호 를 출력하도록 함
                     print('error {} {} {} {}'.format(i, j, k, m))
 
         # for 문을 진행하는 중 문제가 발생하여 중단되는 일을 방지하기 위해
         # 10페이지 단위로 중간 저장함
-        if j % 10 == 0:
-            df_section_title = pd.DataFrame(titles,columns=['titles'])
-            df_section_title['category']=category[i]
-            # crawling 폴더에 naver_news_(카테고리 넘버)_(페이지).cvs 파일로 저장
-            df_section_title.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(i, j), index=False)
-            titles = []         # titles 초기화
+        # if j % 10 == 0:
+        #     df_section_title = pd.DataFrame(titles,columns=['titles'])
+        #     df_section_title['category']=category[i]
+        #     if category[i] == 'IT':
+        #         df = df.rename(columns={'IT': 'Science'})
+        #     # crawling 폴더에 naver_news_(카테고리)_(카테고리 넘버)_(페이지).cvs 파일로 저장
+        #     df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
+        #     df_section_title.to_csv('./crawling_data/naver_news_{}_{}_{}.csv'.format(category[i], i, j), index=False)
+        #     titles = []         # titles 초기화
     df_section_title = pd.DataFrame(titles, columns=['titles'])
     df_section_title['category'] = category[i]
+    if category[i] == 'IT':
+        df = df.rename(columns={'IT': 'Science'})
+    df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
+
     # crawling 폴더에 naver_news_(카테고리)_(년월일).cvs 파일로 저장
     df_titles.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(category[i], datetime.datetime.now().strftime('%Y%m%d')), index=False)
 

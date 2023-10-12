@@ -1,5 +1,5 @@
 import pandas as pd
-import glob
+import glob                 # 특정 파일 패턴이나 이름과 일치하는 파일을 검색
 import datetime
 
 # 지정 폴더 속 data path 전체 출력

@@ -19,16 +19,38 @@ df.info()
 X = df['titles']
 Y = df['category']
 
-# encoder = LabelEncoder()                        # LabelEncoder 함수를 변수에 할당시킴
+# encoder = LabelEncoder()
 # labeled_y = encoder.fit_transform(Y)
 # print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
 # label = encoder.classes_
-# print(label)                                    # 카테고리 출력
+# print(label)
 #
 # onehot_y = to_categorical(labeled_y)
 # print(onehot_y)                                 # 카테고리 onehot-encoding
 
 okt = Okt()
 
-okt_morph_x = okt.morphs(X[0])
-print(okt_morph_x)
+for i in range(len(X)):
+    X[i] = okt.morphs(X[i], stem=True)
+print(X)
+
+# 불용어 리스트 불러옴 (인덱스 제거)
+stopwords = pd.read_csv('./stopwords.csv', index_col=0)
+for j in range(len(X)):                                         # title 수 만큼 반복
+    words = []
+    for i in range(len(X[j])):                                  # 형태소? 수 만큼 반복
+        if len(X[j][i]) > 1:                                    # 한글자 제거
+            if X[j][i] not in list(stopwords['stopword']):      # 불용어 확인
+                words.append(X[j][i])
+    X[j] = ' '.join(words)
+print(X)
+
+
+token = Tokenizer()
+token.fit_on_texts(X)                               # 각 형태소에 라벨 부여
+tokened_x = token.texts_to_sequences(X)             # 라벨에 리스트 부여
+wordsize = len(token.word_index) + 1
+print("Tokened_X :", tokened_x[0])
+print("Wordsize :", wordsize)
+
+# with open('./models/')

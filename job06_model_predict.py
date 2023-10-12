@@ -23,7 +23,7 @@ labeled_y = encoder.transform(Y)                        # 주의 : fit을 할 �
 label = encoder.classes_
 
 onehot_y = to_categorical(labeled_y)
-print(onehot_y)
+# print(onehot_y)
 
 okt = Okt()
 
@@ -49,7 +49,7 @@ for i in range(len(tokened_x)):
     if len(tokened_x[i]) > 21:
         tokened_x[i] = tokened_x[i][:22]
 x_pad = pad_sequences(tokened_x, 21)
-model = load_model('./models/news_category_classification_model_0.7140425443649292.h5')
+model = load_model('./models/news_category_classification_model_0.7249893546104431.h5')
 
 preds = model.predict(x_pad)
 predicts = []

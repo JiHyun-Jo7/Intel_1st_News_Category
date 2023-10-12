@@ -4,7 +4,7 @@ import re                               # 정규식 지원을 제공. 정규식 
 import pandas as pd
 import datetime
 
-category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'IT', 'Science']
+category = ['Politics', 'Economic', 'Social', 'Culture', 'World', 'Science']
 url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=100'
 
 df_titles = pd.DataFrame()          # 빈 데이터 프레임 생성
@@ -30,7 +30,7 @@ headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
 
 re_title = re.compile('[^가-힣|a-z|A-Z]')
 
-for i in range(7):
+for i in range(6):
     resp = requests.get('https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=10{}'.format(i), headers=headers)
     soup = BeautifulSoup(resp.text, 'html.parser')
     title_tags = soup.select('.sh_text_headline')

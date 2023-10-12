@@ -34,7 +34,7 @@ okt = Okt()
 
 for i in range(len(X)):
     X[i] = okt.morphs(X[i], stem=True)
-print(X)
+# print(X)
 
 # 불용어 리스트 불러옴 (인덱스 제거)
 stopwords = pd.read_csv('./stopwords.csv', index_col=0)
@@ -45,8 +45,7 @@ for j in range(len(X)):                                         # title 수 만�
             if X[j][i] not in list(stopwords['stopword']):      # 불용어 확인
                 words.append(X[j][i])
     X[j] = ' '.join(words)
-print(X)
-
+# print(X)
 
 token = Tokenizer()
 token.fit_on_texts(X)                               # 각 형태소에 라벨 부여
@@ -55,7 +54,7 @@ wordsize = len(token.word_index) + 1
 print("Tokened_X :", tokened_x[0:3])
 print("Wordsize :", wordsize)
 
-with open('./models/news_token.picle', 'wb') as f:
+with open('./models/news_token.pickle', 'wb') as f:
     pickle.dump(token, f)
 
 max = 0             # max 초기화
@@ -65,7 +64,7 @@ for i in range(len(tokened_x)):
 print("가장 긴 문장의 길이 : ", max)
 
 x_pad = pad_sequences(tokened_x, max)               # 모든 문장의 길이를 가장 긴 문장의 길이에 맞춤 (빈 공간의 값 = 0)
-print(x_pad[:3])
+# print(x_pad[:3])
 
 X_train, X_test, Y_train, Y_test = train_test_split(
     x_pad, onehot_y, test_size=0.2)
@@ -74,3 +73,4 @@ print(X_test.shape, Y_test.shape)
 
 xy = X_train, X_test, Y_train, Y_test
 np.save('./crawling_data/news_data_max_{}_wordsize_{}'.format(max, wordsize), xy)
+

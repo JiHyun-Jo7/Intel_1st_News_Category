@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 # 시퀀스 데이터의 길이를 조정하여 동일한 길이를 가지도록 패딩(padding)을 추가하는 기능을 제공
 
 
-pd.set_option('display.unicode.east_asian_width', True)             # 제목 열을 맞추기 위한 코드
+# pd.set_option('display.unicode.east_asian_width', True)             # 제목 열을 맞추기 위한 코드
 df = pd.read_csv('./crawling_data/naver_news_titles_20231012.csv')
 print(df.head())
 df.info()
@@ -19,14 +19,16 @@ df.info()
 X = df['titles']
 Y = df['category']
 
-encoder = LabelEncoder()
-labeled_y = encoder.fit_transform(Y)
-print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
-label = encoder.classes_
-print(label)                                    # 카테고리 출력
+# encoder = LabelEncoder()                        # LabelEncoder 함수를 변수에 할당시킴
+# labeled_y = encoder.fit_transform(Y)
+# print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
+# label = encoder.classes_
+# print(label)                                    # 카테고리 출력
+#
+# onehot_y = to_categorical(labeled_y)
+# print(onehot_y)                                 # 카테고리 onehot-encoding
 
-onehot_y = to_categorical(labeled_y)
-print(onehot_y)                                 # 카테고리 onehot-encoding
+okt = Okt()
 
-
-
+okt_morph_x = okt.morphs(X[0])
+print(okt_morph_x)

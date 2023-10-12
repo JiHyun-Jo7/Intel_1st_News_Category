@@ -10,7 +10,6 @@ from tensorflow.keras.preprocessing.text import Tokenizer   # 자연어 처리�
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 # 시퀀스 데이터의 길이를 조정하여 동일한 길이를 가지도록 패딩(padding)을 추가하는 기능을 제공
 
-
 # pd.set_option('display.unicode.east_asian_width', True)             # 제목 열을 맞추기 위한 코드
 df = pd.read_csv('./crawling_data/naver_news_titles_20231012.csv')
 print(df.head())
@@ -19,14 +18,17 @@ df.info()
 X = df['titles']
 Y = df['category']
 
-# encoder = LabelEncoder()
-# labeled_y = encoder.fit_transform(Y)
-# print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
-# label = encoder.classes_
-# print(label)
-#
-# onehot_y = to_categorical(labeled_y)
-# print(onehot_y)                                 # 카테고리 onehot-encoding
+encoder = LabelEncoder()
+labeled_y = encoder.fit_transform(Y)
+print(labeled_y[:3])                            # 카테고리 넘버 출력 (초반 3개)
+label = encoder.classes_
+print(label)
+
+with open('./models/encoder.pickle', 'wb') as f:
+    pickle.dump(encoder, f)
+
+onehot_y = to_categorical(labeled_y)
+print(onehot_y)                                 # 카테고리 onehot-encoding
 
 okt = Okt()
 
@@ -50,7 +52,25 @@ token = Tokenizer()
 token.fit_on_texts(X)                               # 각 형태소에 라벨 부여
 tokened_x = token.texts_to_sequences(X)             # 라벨에 리스트 부여
 wordsize = len(token.word_index) + 1
-print("Tokened_X :", tokened_x[0])
+print("Tokened_X :", tokened_x[0:3])
 print("Wordsize :", wordsize)
 
-# with open('./models/')
+with open('./models/news_token.picle', 'wb') as f:
+    pickle.dump(token, f)
+
+max = 0             # max 초기화
+for i in range(len(tokened_x)):
+    if max < len(tokened_x[i]):
+        max = len(tokened_x[i])
+print("가장 긴 문장의 길이 : ", max)
+
+x_pad = pad_sequences(tokened_x, max)               # 모든 문장의 길이를 가장 긴 문장의 길이에 맞춤 (빈 공간의 값 = 0)
+print(x_pad[:3])
+
+X_train, X_test, Y_train, Y_test = train_test_split(
+    x_pad, onehot_y, test_size=0.2)
+print(X_train.shape, Y_train.shape)
+print(X_test.shape, Y_test.shape)
+
+xy = X_train, X_test, Y_train, Y_test
+np.save('./crawling_data/news_data_max_{}_wordsize_{}'.format(max, wordsize), xy)

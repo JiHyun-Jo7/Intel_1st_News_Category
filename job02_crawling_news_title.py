@@ -55,20 +55,21 @@ for i in range(1):
                 except:
                     # 파일에 오류가 있을 경우 error + 카테고리 넘버, 페이지 수, 글 번호 를 출력하도록 함
                     print('error {} {} {} {}'.format(i, j, k, m))
+
+        # for 문을 진행하는 중 문제가 발생하여 중단되는 일을 방지하기 위해
+        # 10페이지 단위로 중간 저장함
         if j % 10 == 0:
-            # for 문을 진행하는 중 문제가 발생하여 중단되는 일을 방지하기 위해
-            # 10페이지 단위로 중간 저장함
             df_section_title = pd.DataFrame(titles,columns=['titles'])
             df_section_title['category']=category[i]
             df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
             # crawling 폴더에 naver_news_(카테고리 넘버)_(페이지).cvs 파일로 저장
-            df_titles.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(i, j), index=False)
+            df_section_title.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(i, j), index=False)
             titles = []         # titles 초기화
     df_section_title = pd.DataFrame(titles, columns=['titles'])
     df_section_title['category'] = category[i]
     df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
-    # crawling 폴더에 naver_news_(카테고리 넘버)_(년월일).cvs 파일로 저장
-    df_titles.to_csv('./crawling_data/crawling_data_{}_{}.csv'.format(i, datetime.datetime.now().strftime('%Y%m%d')), index=False)
+    # crawling 폴더에 naver_news_(카테고리)_(년월일).cvs 파일로 저장
+    df_titles.to_csv('./crawling_data/crawling_data_{}_{}.csv'.format(category[i], datetime.datetime.now().strftime('%Y%m%d')), index=False)
 
 print(df_titles.head(20))       # 상위 제목 20개 출력
 df_titles.info()

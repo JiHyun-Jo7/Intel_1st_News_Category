@@ -67,7 +67,7 @@ for i in range(1):
     df_section_title = pd.DataFrame(titles, columns=['titles'])
     df_section_title['category'] = category[i]
     # crawling 폴더에 naver_news_(카테고리)_(년월일).cvs 파일로 저장
-    df_titles.to_csv('./crawling_data/crawling_data_{}_{}.csv'.format(category[i], datetime.datetime.now().strftime('%Y%m%d')), index=False)
+    df_titles.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(category[i], datetime.datetime.now().strftime('%Y%m%d')), index=False)
 
 print(df_titles.head(20))       # 상위 제목 20개 출력
 df_titles.info()

@@ -46,10 +46,10 @@ tokened_x = token.texts_to_sequences(X)
 
 # 최대 길이를 21자로 제한
 for i in range(len(tokened_x)):
-    if len(tokened_x[i]) > 21:
-        tokened_x[i] = tokened_x[i][:22]
-x_pad = pad_sequences(tokened_x, 21)
-model = load_model('./models/news_category_classification_model_0.7249893546104431.h5')
+    if len(tokened_x[i]) > 23:
+        tokened_x[i] = tokened_x[i][:24]
+x_pad = pad_sequences(tokened_x, 23)
+model = load_model('./models/news_category_classification_model_0.8227794170379639.h5')
 
 preds = model.predict(x_pad)
 predicts = []
@@ -58,7 +58,7 @@ for pred in preds:
     pred[np.argmax(pred)] = 0
     second = label[np.argmax(pred)]
     predicts.append([most, second])
-df['predict'] = predicts    # list 로 두 개의 값을 가짐 (정답, 정답에 가장 가까운 답)
+df['predict'] = predicts    # list 로 두 개의 값을 제출 (가장 높은 확률, 두번째로 높은 확률의 답)
 print(df.head(30))
 
 df['OX'] = 0                # 두 개의 답 중 하나라도 맞췄을 확률

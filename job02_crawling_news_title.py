@@ -61,13 +61,11 @@ for i in range(1):
         if j % 10 == 0:
             df_section_title = pd.DataFrame(titles,columns=['titles'])
             df_section_title['category']=category[i]
-            df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
             # crawling 폴더에 naver_news_(카테고리 넘버)_(페이지).cvs 파일로 저장
             df_section_title.to_csv('./crawling_data/naver_news_{}_{}.csv'.format(i, j), index=False)
             titles = []         # titles 초기화
     df_section_title = pd.DataFrame(titles, columns=['titles'])
     df_section_title['category'] = category[i]
-    df_titles = pd.concat([df_titles, df_section_title], ignore_index=True)
     # crawling 폴더에 naver_news_(카테고리)_(년월일).cvs 파일로 저장
     df_titles.to_csv('./crawling_data/crawling_data_{}_{}.csv'.format(category[i], datetime.datetime.now().strftime('%Y%m%d')), index=False)
 
